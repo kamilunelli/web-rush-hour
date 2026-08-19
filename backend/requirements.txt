@@ -1,0 +1,6 @@
+# Dependências do backend (instaladas com: pip install -r requirements.txt)
+
+fastapi          # framework web que cria a API
+uvicorn[standard] # servidor ASGI que roda o FastAPI (o "motor" que serve a API)
+psycopg[binary]  # driver para conversar com o PostgreSQL
+python-dotenv    # lê variáveis de ambiente de um arquivo .env

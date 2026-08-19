@@ -1,0 +1,17 @@
+{
+  "name": "hora-do-rush-frontend",
+  "version": "1.0.0",
+  "description": "Frontend do jogo Hora do Rush (HTML, CSS, JS puro + TailwindCSS)",
+  "scripts": {
+    "watch:css": "tailwindcss -i ./src/css/input.css -o ./src/css/output.css --watch",
+    "serve": "browser-sync start --server --port 3000 --no-open --no-notify --files \"*.html, src/js/**/*.js, src/css/output.css\"",
+    "dev": "concurrently -n css,web -c blue,green \"npm:watch:css\" \"npm:serve\"",
+    "build": "tailwindcss -i ./src/css/input.css -o ./src/css/output.css --minify"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3",
+    "browser-sync": "^3.0.0",
+    "concurrently": "^9.0.0"
+  }
+}

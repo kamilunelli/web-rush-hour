@@ -1,0 +1,5 @@
+# Não copiar para dentro da imagem (evita conflito com o ambiente Linux do container).
+.venv/
+__pycache__/
+*.pyc
+.env

@@ -1,0 +1,13 @@
+# Python
+backend/.venv/
+__pycache__/
+*.pyc
+.env
+
+# Node / Tailwind
+frontend/node_modules/
+frontend/src/css/output.css
+
+# Sistema
+.DS_Store
+Thumbs.db

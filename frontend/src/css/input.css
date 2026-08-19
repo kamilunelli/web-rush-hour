@@ -1,0 +1,8 @@
+/*
+  Arquivo de ENTRADA do Tailwind (v4).
+  Esta linha injeta todo o Tailwind. O CLI lê este arquivo, olha quais
+  classes você usou nos .html/.js e gera o "output.css" só com o necessário.
+
+  Aqui também dá para criar estilos e temas personalizados depois.
+*/
+@import "tailwindcss";

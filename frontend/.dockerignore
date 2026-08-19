@@ -1,0 +1,3 @@
+# O node_modules é instalado DENTRO do container (não copiar o da máquina).
+node_modules/
+src/css/output.css
