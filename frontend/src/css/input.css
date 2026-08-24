@@ -1,8 +1,128 @@
 /*
-  Arquivo de ENTRADA do Tailwind (v4).
-  Esta linha injeta todo o Tailwind. O CLI lê este arquivo, olha quais
-  classes você usou nos .html/.js e gera o "output.css" só com o necessário.
-
-  Aqui também dá para criar estilos e temas personalizados depois.
+  Entrada do Tailwind (v4) + estilos próprios do jogo.
+  O Tailwind cuida do layout/tipografia; aqui embaixo ficam os estilos
+  específicos do tabuleiro e dos veículos (posicionados via pixels no JS).
 */
 @import "tailwindcss";
+
+:root {
+  --board-frame: #2b2f36;   /* moldura escura do tabuleiro */
+  --board-cell: #d8dade;    /* cor das células */
+  --board-line: #b7bac1;    /* linhas da grade */
+}
+
+/* ------------ Tabuleiro ------------ */
+.board {
+  position: relative;
+  width: min(92vw, 520px);
+  aspect-ratio: 1 / 1;
+  background: var(--board-frame);
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* Área jogável 6x6 (onde os veículos são posicionados). */
+.board-grid {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background:
+    repeating-linear-gradient(to right,  var(--board-line) 0 1px, transparent 1px calc(100% / 6)),
+    repeating-linear-gradient(to bottom, var(--board-line) 0 1px, transparent 1px calc(100% / 6)),
+    var(--board-cell);
+  border: 1px solid var(--board-line);
+  border-radius: 6px;
+  overflow: visible;
+  touch-action: none;  /* impede o scroll ao arrastar no celular */
+}
+
+/* Seta de saída (lado direito, 3ª linha). */
+.exit-arrow {
+  position: absolute;
+  right: -14px;
+  top: calc(14px + (100% - 28px) * (2.5 / 6));
+  transform: translateY(-50%);
+  width: 26px;
+  height: 34px;
+  background: var(--board-cell);
+  border: 2px solid #fff;
+  clip-path: polygon(0 25%, 55% 25%, 55% 0, 100% 50%, 55% 100%, 55% 75%, 0 75%);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ------------ Veículos ------------ */
+.vehicle {
+  position: absolute;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  z-index: 2;
+  transition: filter 0.15s ease;
+}
+.vehicle:active { cursor: grabbing; }
+.vehicle.is-dragging { z-index: 5; filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.35)); }
+
+/* enquanto anima (encaixe/saída), transição suave */
+.vehicle.animate { transition: left 0.18s ease, top 0.18s ease, transform 0.18s ease; }
+
+.vehicle img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+  /* o preflight do Tailwind aplica max-width:100%, o que travava os
+     sprites verticais (girados) na largura de 1 célula — desativamos aqui. */
+  max-width: none;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
+}
+/* veículo vertical: o sprite (horizontal) é girado 90° — tamanhos são
+   definidos no JS (largura/altura trocadas). */
+.vehicle.v img { transform: translate(-50%, -50%) rotate(90deg); }
+
+/* destaque do carro principal */
+.vehicle.main { z-index: 3; }
+
+/* ------------ Botões ------------ */
+.btn {
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #fff;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.18);
+  transition: transform 0.08s ease, filter 0.15s ease;
+}
+.btn:hover { filter: brightness(1.05); }
+.btn:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0, 0, 0, 0.18); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-green  { background: #22c55e; }
+.btn-blue   { background: #3b82f6; }
+.btn-gray   { background: #94a3b8; }
+.btn-yellow { background: #eab308; }
+.btn-orange { background: #f97316; }
+
+.back-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  font-size: 20px;
+  font-weight: 800;
+  color: #475569;
+}
+.back-btn:hover { background: #f1f5f9; }
+
+/* ------------ Tela inicial (fundo com carrinhos) ------------ */
+#screen-home {
+  background: url("../assets/images/home-bg.svg") center / cover no-repeat;
+}
+
+/* ------------ Utilidades ------------ */
+.screen { display: none; }
+.screen.active { display: flex; }

@@ -2,23 +2,118 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Hora do Rush</title>
-
-  <!-- CSS gerado pelo Tailwind. Precisamos rodar o build para este arquivo existir. -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚗</text></svg>" />
   <link rel="stylesheet" href="./src/css/output.css" />
 </head>
-<body class="min-h-screen flex items-center justify-center bg-slate-100">
+<body class="min-h-screen bg-gradient-to-b from-sky-100 to-slate-200 text-slate-800">
 
-  <!-- Tela de teste: se aparecer estilizado, o Tailwind está funcionando. -->
-  <div class="text-center">
-    <h1 class="text-4xl font-extrabold text-slate-800">
-      HORA <span class="text-red-600">DO</span> RUSH
-    </h1>
-    <p class="mt-2 text-slate-500">Estrutura inicial funcionando ✅</p>
+  <!-- ================= TELA INICIAL ================= -->
+  <section id="screen-home" class="screen active min-h-screen flex-col items-center justify-center gap-8 p-6">
+    <img src="./src/assets/images/logo.svg" alt="Hora do Rush" class="w-[min(80vw,460px)]" />
+    <nav class="flex flex-col gap-4 w-64">
+      <button data-goto="game"    class="btn btn-green">JOGAR</button>
+      <button data-goto="rules"   class="btn btn-blue">REGRAS</button>
+      <button data-goto="records" class="btn btn-gray">RECORDES</button>
+    </nav>
+  </section>
+
+  <!-- ================= TELA DE REGRAS ================= -->
+  <section id="screen-rules" class="screen min-h-screen flex-col items-center p-6">
+    <header class="w-full max-w-2xl flex items-center gap-3 mb-6">
+      <button data-goto="home" class="back-btn">&lt;</button>
+      <h1 class="text-2xl font-extrabold tracking-wide">REGRAS</h1>
+    </header>
+    <div class="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-8">
+      <h2 class="text-xl font-bold text-center mb-6">COMO JOGAR "HORA DO RUSH"</h2>
+      <ol class="space-y-3 text-lg list-decimal list-inside text-slate-700">
+        <li>O objetivo é tirar o carro <span class="font-bold text-red-600">VERMELHO</span> do tabuleiro pela saída à direita.</li>
+        <li>Carros na <b>vertical</b> movem-se apenas verticalmente.</li>
+        <li>Carros na <b>horizontal</b> movem-se apenas horizontalmente.</li>
+        <li>Mova os outros veículos para abrir caminho.</li>
+        <li>Veículos não podem colidir nem passar por cima de outros.</li>
+        <li>Arrastar por várias casas de uma vez conta como <b>1 movimento</b>.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ================= TELA DE RECORDES ================= -->
+  <section id="screen-records" class="screen min-h-screen flex-col items-center p-6">
+    <header class="w-full max-w-2xl flex items-center gap-3 mb-6">
+      <button data-goto="home" class="back-btn">&lt;</button>
+      <h1 class="text-2xl font-extrabold tracking-wide">RECORDES</h1>
+    </header>
+    <div class="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-4 overflow-x-auto">
+      <table class="w-full text-center">
+        <thead>
+          <tr class="text-slate-500 text-sm border-b border-slate-200">
+            <th class="py-2 px-2">#</th>
+            <th class="py-2 px-2">DATA</th>
+            <th class="py-2 px-2">NÍVEL</th>
+            <th class="py-2 px-2">TEMPO</th>
+            <th class="py-2 px-2">MOV.</th>
+            <th class="py-2 px-2">SCORE</th>
+          </tr>
+        </thead>
+        <tbody id="records-body" class="divide-y divide-slate-100">
+          <!-- preenchido via JS -->
+        </tbody>
+      </table>
+      <p id="records-empty" class="hidden text-center text-slate-400 py-8">
+        Nenhuma partida registrada ainda. Jogue uma partida completa (sem usar o "Resolver")!
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= TELA DO JOGO ================= -->
+  <section id="screen-game" class="screen min-h-screen flex-col items-center p-4">
+    <header class="w-full max-w-3xl flex items-center justify-between mb-4">
+      <button data-goto="home" class="back-btn">&lt;</button>
+      <div class="flex gap-6 font-bold text-lg">
+        <span>TEMPO: <span id="hud-time">00:00</span></span>
+        <span>MOV.: <span id="hud-moves">0</span></span>
+      </div>
+      <span class="text-sm text-slate-500">Nível <span id="hud-level">-</span></span>
+    </header>
+
+    <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+      <!-- Tabuleiro -->
+      <div class="board" id="board">
+        <div class="board-grid" id="grid"></div>
+        <div class="exit-arrow"></div>
+      </div>
+
+      <!-- Controles -->
+      <div class="flex md:flex-col gap-3 w-full md:w-40">
+        <button id="btn-solve"   class="btn btn-yellow flex-1">RESOLVER</button>
+        <button id="btn-restart" class="btn btn-orange flex-1">REINICIAR</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MODAL DE VITÓRIA ================= -->
+  <div id="modal" class="fixed inset-0 hidden items-center justify-center bg-black/50 z-50 p-4">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-sm text-center">
+      <h2 class="text-3xl font-extrabold text-green-500 mb-2">SUCESSO!</h2>
+      <p class="text-slate-600 mb-4">Parabéns, você completou o nível.</p>
+      <div class="space-y-1 text-lg font-semibold mb-2">
+        <p>TEMPO: <span id="modal-time">00:00</span></p>
+        <p>MOVIMENTOS: <span id="modal-moves">0</span></p>
+        <p>SCORE: <span id="modal-score" class="text-sky-600">0</span></p>
+      </div>
+      <p id="modal-record" class="hidden text-amber-500 font-bold mb-2">🏆 NOVO RECORDE!</p>
+      <p id="modal-note" class="hidden text-xs text-slate-400 mb-2"></p>
+      <div class="flex flex-col gap-3 mt-4">
+        <button id="modal-again" class="btn btn-gray">JOGAR NOVAMENTE</button>
+        <button id="modal-next"  class="btn btn-green">PRÓXIMA FASE</button>
+      </div>
+    </div>
   </div>
 
-  <!-- Nosso JavaScript (puro). -->
-  <script src="./src/js/main.js"></script>
+  <!-- toast simples -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 hidden bg-slate-800 text-white text-sm px-4 py-2 rounded-full shadow-lg z-50"></div>
+
+  <script type="module" src="./src/js/main.js"></script>
 </body>
 </html>
