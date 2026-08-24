@@ -1,0 +1,664 @@
+[
+  {
+    "numero": 1,
+    "optimal_moves": 2,
+    "vehicles": [
+      {
+        "color": "red-car",
+        "orient": "H",
+        "len": 2,
+        "row": 2,
+        "col": 1
+      },
+      {
+        "color": "cyan-truck",
+        "orient": "H",
+        "len": 3,
+        "row": 4,
+        "col": 1
+      },
+      {
+        "color": "yellow-car",
+        "orient": "V",
+        "len": 2,
+        "row": 1,
+        "col": 5
+      },
+      {
+        "color": "blue-car",
+        "orient": "H",
+        "len": 2,
+        "row": 1,
+        "col": 1
+      },
+      {
+        "color": "mint-car",
+        "orient": "V",
+        "len": 2,
+        "row": 0,
+        "col": 0
+      },
+      {
+        "color": "lilac-car",
+        "orient": "H",
+        "len": 2,
+        "row": 0,
+        "col": 1
+      },
+      {
+        "color": "brown-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 3,
+        "col": 0
+      }
+    ]
+  },
+  {
+    "numero": 2,
+    "optimal_moves": 4,
+    "vehicles": [
+      {
+        "color": "red-car",
+        "orient": "H",
+        "len": 2,
+        "row": 2,
+        "col": 0
+      },
+      {
+        "color": "orange-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 2,
+        "col": 3
+      },
+      {
+        "color": "brown-truck",
+        "orient": "H",
+        "len": 3,
+        "row": 5,
+        "col": 1
+      },
+      {
+        "color": "purple-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 1,
+        "col": 5
+      },
+      {
+        "color": "blue-car",
+        "orient": "H",
+        "len": 2,
+        "row": 0,
+        "col": 1
+      }
+    ]
+  },
+  {
+    "numero": 3,
+    "optimal_moves": 7,
+    "vehicles": [
+      {
+        "color": "red-car",
+        "orient": "H",
+        "len": 2,
+        "row": 2,
+        "col": 1
+      },
+      {
+        "color": "orange-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 2,
+        "col": 0
+      },
+      {
+        "color": "blue-car",
+        "orient": "H",
+        "len": 2,
+        "row": 5,
+        "col": 4
+      },
+      {
+        "color": "lilac-car",
+        "orient": "V",
+        "len": 2,
+        "row": 0,
+        "col": 3
+      },
+      {
+        "color": "cyan-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 3,
+        "col": 1
+      },
+      {
+        "color": "brown-truck",
+        "orient": "H",
+        "len": 3,
+        "row": 4,
+        "col": 3
+      },
+      {
+        "color": "yellow-car",
+        "orient": "V",
+        "len": 2,
+        "row": 0,
+        "col": 0
+      },
+      {
+        "color": "green-car",
+        "orient": "V",
+        "len": 2,
+        "row": 2,
+        "col": 5
+      },
+      {
+        "color": "purple-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 1,
+        "col": 4
+      }
+    ]
+  },
+  {
+    "numero": 4,
+    "optimal_moves": 9,
+    "vehicles": [
+      {
+        "color": "red-car",
+        "orient": "H",
+        "len": 2,
+        "row": 2,
+        "col": 0
+      },
+      {
+        "color": "lilac-car",
+        "orient": "V",
+        "len": 2,
+        "row": 4,
+        "col": 3
+      },
+      {
+        "color": "blue-car",
+        "orient": "H",
+        "len": 2,
+        "row": 5,
+        "col": 1
+      },
+      {
+        "color": "purple-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 1,
+        "col": 5
+      },
+      {
+        "color": "cyan-truck",
+        "orient": "H",
+        "len": 3,
+        "row": 3,
+        "col": 1
+      },
+      {
+        "color": "mint-car",
+        "orient": "H",
+        "len": 2,
+        "row": 0,
+        "col": 4
+      },
+      {
+        "color": "brown-truck",
+        "orient": "H",
+        "len": 3,
+        "row": 1,
+        "col": 0
+      },
+      {
+        "color": "orange-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 3,
+        "col": 0
+      },
+      {
+        "color": "yellow-car",
+        "orient": "H",
+        "len": 2,
+        "row": 4,
+        "col": 4
+      },
+      {
+        "color": "green-car",
+        "orient": "H",
+        "len": 2,
+        "row": 0,
+        "col": 1
+      }
+    ]
+  },
+  {
+    "numero": 5,
+    "optimal_moves": 11,
+    "vehicles": [
+      {
+        "color": "red-car",
+        "orient": "H",
+        "len": 2,
+        "row": 2,
+        "col": 0
+      },
+      {
+        "color": "yellow-car",
+        "orient": "H",
+        "len": 2,
+        "row": 0,
+        "col": 2
+      },
+      {
+        "color": "mint-car",
+        "orient": "H",
+        "len": 2,
+        "row": 5,
+        "col": 4
+      },
+      {
+        "color": "green-car",
+        "orient": "V",
+        "len": 2,
+        "row": 1,
+        "col": 3
+      },
+      {
+        "color": "cyan-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 2,
+        "col": 4
+      },
+      {
+        "color": "purple-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 2,
+        "col": 5
+      },
+      {
+        "color": "pink-truck",
+        "orient": "H",
+        "len": 3,
+        "row": 3,
+        "col": 0
+      },
+      {
+        "color": "blue-car",
+        "orient": "V",
+        "len": 2,
+        "row": 4,
+        "col": 2
+      }
+    ]
+  },
+  {
+    "numero": 6,
+    "optimal_moves": 14,
+    "vehicles": [
+      {
+        "color": "red-car",
+        "orient": "H",
+        "len": 2,
+        "row": 2,
+        "col": 3
+      },
+      {
+        "color": "mint-car",
+        "orient": "V",
+        "len": 2,
+        "row": 4,
+        "col": 3
+      },
+      {
+        "color": "orange-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 0,
+        "col": 5
+      },
+      {
+        "color": "purple-truck",
+        "orient": "H",
+        "len": 3,
+        "row": 5,
+        "col": 0
+      },
+      {
+        "color": "brown-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 2,
+        "col": 1
+      },
+      {
+        "color": "cyan-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 0,
+        "col": 2
+      },
+      {
+        "color": "blue-car",
+        "orient": "H",
+        "len": 2,
+        "row": 3,
+        "col": 2
+      },
+      {
+        "color": "green-car",
+        "orient": "H",
+        "len": 2,
+        "row": 4,
+        "col": 4
+      },
+      {
+        "color": "pink-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 0,
+        "col": 0
+      }
+    ]
+  },
+  {
+    "numero": 7,
+    "optimal_moves": 16,
+    "vehicles": [
+      {
+        "color": "red-car",
+        "orient": "H",
+        "len": 2,
+        "row": 2,
+        "col": 0
+      },
+      {
+        "color": "blue-car",
+        "orient": "H",
+        "len": 2,
+        "row": 0,
+        "col": 0
+      },
+      {
+        "color": "cyan-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 0,
+        "col": 3
+      },
+      {
+        "color": "lilac-car",
+        "orient": "H",
+        "len": 2,
+        "row": 4,
+        "col": 3
+      },
+      {
+        "color": "pink-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 3,
+        "col": 2
+      },
+      {
+        "color": "green-car",
+        "orient": "H",
+        "len": 2,
+        "row": 5,
+        "col": 4
+      },
+      {
+        "color": "brown-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 0,
+        "col": 5
+      },
+      {
+        "color": "orange-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 1,
+        "col": 4
+      },
+      {
+        "color": "mint-car",
+        "orient": "V",
+        "len": 2,
+        "row": 4,
+        "col": 0
+      },
+      {
+        "color": "yellow-car",
+        "orient": "V",
+        "len": 2,
+        "row": 3,
+        "col": 1
+      }
+    ]
+  },
+  {
+    "numero": 8,
+    "optimal_moves": 18,
+    "vehicles": [
+      {
+        "color": "red-car",
+        "orient": "H",
+        "len": 2,
+        "row": 2,
+        "col": 0
+      },
+      {
+        "color": "orange-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 1,
+        "col": 4
+      },
+      {
+        "color": "yellow-car",
+        "orient": "H",
+        "len": 2,
+        "row": 5,
+        "col": 3
+      },
+      {
+        "color": "purple-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 2,
+        "col": 5
+      },
+      {
+        "color": "cyan-truck",
+        "orient": "H",
+        "len": 3,
+        "row": 0,
+        "col": 0
+      },
+      {
+        "color": "pink-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 1,
+        "col": 2
+      },
+      {
+        "color": "green-car",
+        "orient": "V",
+        "len": 2,
+        "row": 0,
+        "col": 3
+      },
+      {
+        "color": "lilac-car",
+        "orient": "H",
+        "len": 2,
+        "row": 4,
+        "col": 2
+      },
+      {
+        "color": "mint-car",
+        "orient": "V",
+        "len": 2,
+        "row": 3,
+        "col": 0
+      },
+      {
+        "color": "blue-car",
+        "orient": "V",
+        "len": 2,
+        "row": 3,
+        "col": 1
+      }
+    ]
+  },
+  {
+    "numero": 9,
+    "optimal_moves": 21,
+    "vehicles": [
+      {
+        "color": "red-car",
+        "orient": "H",
+        "len": 2,
+        "row": 2,
+        "col": 0
+      },
+      {
+        "color": "orange-truck",
+        "orient": "H",
+        "len": 3,
+        "row": 3,
+        "col": 1
+      },
+      {
+        "color": "yellow-car",
+        "orient": "V",
+        "len": 2,
+        "row": 1,
+        "col": 2
+      },
+      {
+        "color": "brown-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 3,
+        "col": 0
+      },
+      {
+        "color": "mint-car",
+        "orient": "H",
+        "len": 2,
+        "row": 0,
+        "col": 1
+      },
+      {
+        "color": "blue-car",
+        "orient": "V",
+        "len": 2,
+        "row": 3,
+        "col": 5
+      },
+      {
+        "color": "cyan-truck",
+        "orient": "H",
+        "len": 3,
+        "row": 5,
+        "col": 2
+      },
+      {
+        "color": "pink-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 0,
+        "col": 3
+      }
+    ]
+  },
+  {
+    "numero": 10,
+    "optimal_moves": 25,
+    "vehicles": [
+      {
+        "color": "red-car",
+        "orient": "H",
+        "len": 2,
+        "row": 2,
+        "col": 2
+      },
+      {
+        "color": "lilac-car",
+        "orient": "V",
+        "len": 2,
+        "row": 3,
+        "col": 3
+      },
+      {
+        "color": "blue-car",
+        "orient": "H",
+        "len": 2,
+        "row": 1,
+        "col": 3
+      },
+      {
+        "color": "green-car",
+        "orient": "H",
+        "len": 2,
+        "row": 3,
+        "col": 0
+      },
+      {
+        "color": "cyan-truck",
+        "orient": "H",
+        "len": 3,
+        "row": 5,
+        "col": 3
+      },
+      {
+        "color": "yellow-car",
+        "orient": "H",
+        "len": 2,
+        "row": 4,
+        "col": 4
+      },
+      {
+        "color": "orange-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 0,
+        "col": 5
+      },
+      {
+        "color": "brown-truck",
+        "orient": "H",
+        "len": 3,
+        "row": 0,
+        "col": 1
+      },
+      {
+        "color": "pink-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 3,
+        "col": 2
+      },
+      {
+        "color": "purple-truck",
+        "orient": "V",
+        "len": 3,
+        "row": 0,
+        "col": 0
+      }
+    ]
+  }
+]
