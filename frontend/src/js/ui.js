@@ -41,11 +41,12 @@ export function renderRecords(records) {
 
   records.forEach((r, i) => {
     const data = new Date(r.played_at).toLocaleDateString("pt-BR");
+    const nivel = r.level_numero === 0 ? "Teste" : r.level_numero;
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td class="py-2 px-2 font-bold text-slate-400">${i + 1}º</td>
       <td class="py-2 px-2">${data}</td>
-      <td class="py-2 px-2">${r.level_numero}</td>
+      <td class="py-2 px-2">${nivel}</td>
       <td class="py-2 px-2">${formatTime(r.time_seconds)}</td>
       <td class="py-2 px-2">${r.moves}</td>
       <td class="py-2 px-2 font-bold text-sky-600">${r.score}</td>

@@ -31,6 +31,12 @@ async function boot() {
   document.getElementById("btn-solve").addEventListener("click", game.onSolveClick);
   document.getElementById("btn-restart").addEventListener("click", game.restart);
 
+  // Nível de teste (bem fácil, não conta para recordes).
+  document.getElementById("btn-test").addEventListener("click", () => {
+    goto("game");
+    game.enterTestLevel();
+  });
+
   // 5) Botões do modal de vitória.
   document.getElementById("modal-again").addEventListener("click", game.playAgain);
   document.getElementById("modal-next").addEventListener("click", game.playNext);

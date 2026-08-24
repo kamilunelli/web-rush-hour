@@ -17,7 +17,18 @@ let moves = 0;
 let seconds = 0;
 let timerId = null;
 let solverUsed = false;      // RN05: se usar "Resolver", não salva recorde
+let isTest = false;          // nível de teste não conta para recordes
 let won = false;
+
+// Nível de teste: MUITO fácil (2 veículos, 2 movimentos) só para validar.
+const TEST_LEVEL = {
+  numero: 0, // 0 = nível de teste (conta nos recordes, aparece como "Teste")
+  optimal_moves: 2,
+  vehicles: [
+    { color: "red-car", orient: "H", len: 2, row: 2, col: 0 },
+    { color: "green-car", orient: "V", len: 2, row: 1, col: 3 },
+  ],
+};
 
 // callback para atualizar a lista de recordes na tela de Recordes
 let onRecordSaved = () => {};
@@ -49,23 +60,29 @@ export function enterGame() {
     showToast("Carregando níveis...");
     return;
   }
-  loadLevelByIndex(nextIndex());
+  loadLevel(levels[nextIndex()], false);
+}
+export function enterTestLevel() {
+  loadLevel(TEST_LEVEL, true);
 }
 export function playNext() {
-  loadLevelByIndex(nextIndex());
+  if (!levels.length) {
+    showToast("Carregando níveis...");
+    return;
+  }
+  loadLevel(levels[nextIndex()], false);
 }
 export function playAgain() {
-  const idx = levels.findIndex((l) => l.numero === level.numero);
-  loadLevelByIndex(idx);
+  loadLevel(level, isTest);
 }
 export function restart() {
-  const idx = levels.findIndex((l) => l.numero === level.numero);
-  loadLevelByIndex(idx);
+  loadLevel(level, isTest);
 }
 
 // ---------- Carregar um nível ----------
-function loadLevelByIndex(idx) {
-  level = levels[idx];
+function loadLevel(lvObj, test) {
+  level = lvObj;
+  isTest = test;
   // cópia profunda dos veículos (para não alterar o original)
   vehicles = level.vehicles.map((v) => ({ ...v }));
   moves = 0;
@@ -73,7 +90,7 @@ function loadLevelByIndex(idx) {
   won = false;
   solverUsed = false;
 
-  document.getElementById("hud-level").textContent = level.numero;
+  document.getElementById("hud-level").textContent = test ? "Teste" : level.numero;
   document.getElementById("hud-moves").textContent = "0";
   document.getElementById("hud-time").textContent = "00:00";
   hideModal();

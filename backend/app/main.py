@@ -43,7 +43,7 @@ app.add_middleware(
 # ---------- Modelos de entrada/saída ----------
 class RecordIn(BaseModel):
     """Dados enviados pelo frontend ao concluir uma partida."""
-    level_numero: int = Field(..., ge=1, le=10)
+    level_numero: int = Field(..., ge=0, le=10)  # 0 = nível de teste
     time_seconds: int = Field(..., ge=0)
     moves: int = Field(..., ge=0)
     score: int = Field(..., ge=0)
@@ -103,10 +103,11 @@ def list_records(limit: int = 10):
 def create_record(rec: RecordIn):
     """Salva uma partida concluída e retorna o registro criado."""
     with db.get_conn() as conn, conn.cursor() as cur:
-        # Garante que o nível existe.
-        cur.execute("SELECT 1 FROM levels WHERE numero = %s;", (rec.level_numero,))
-        if cur.fetchone() is None:
-            raise HTTPException(status_code=404, detail="Nível inexistente.")
+        # Garante que o nível existe (o 0 é o nível de teste, não fica no banco).
+        if rec.level_numero != 0:
+            cur.execute("SELECT 1 FROM levels WHERE numero = %s;", (rec.level_numero,))
+            if cur.fetchone() is None:
+                raise HTTPException(status_code=404, detail="Nível inexistente.")
 
         cur.execute(
             """
