@@ -40,6 +40,11 @@ async function boot() {
   // 5) Botões do modal de vitória.
   document.getElementById("modal-again").addEventListener("click", game.playAgain);
   document.getElementById("modal-next").addEventListener("click", game.playNext);
+
+  // Sair para o menu (X e link do modal).
+  const exitToMenu = () => { game.exitToMenu(); goto("home"); };
+  document.getElementById("modal-close").addEventListener("click", exitToMenu);
+  document.getElementById("modal-exit").addEventListener("click", exitToMenu);
 }
 
 async function loadRecords() {

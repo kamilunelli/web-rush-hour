@@ -328,6 +328,13 @@ function hideModal() {
   m.classList.remove("flex");
 }
 
+// Sair da partida (fecha o modal e para o cronômetro).
+export function exitToMenu() {
+  stopTimer();
+  won = true; // impede novos arrastes até carregar outro nível
+  hideModal();
+}
+
 // ---------- Botão Resolver (inerte por enquanto) ----------
 export function onSolveClick() {
   // O solver A* será implementado depois. Por ora, só avisa.

@@ -37,18 +37,29 @@
   touch-action: none;  /* impede o scroll ao arrastar no celular */
 }
 
-/* Seta de saída (lado direito, 3ª linha). */
+/* Abertura (buraco) na moldura direita, alinhada à 3ª linha. */
+.exit-gap {
+  position: absolute;
+  right: -4px;
+  top: calc(14px + (100% - 28px) * 2 / 6);
+  height: calc((100% - 28px) / 6);
+  width: 22px;
+  background: var(--board-cell);
+  border-radius: 2px 5px 5px 2px;
+  box-shadow: inset 5px 0 7px rgba(0, 0, 0, 0.3); /* sensação de túnel/buraco */
+}
+
+/* Seta de saída bem visível (verde, pulsando para a direita). */
 .exit-arrow {
   position: absolute;
-  right: -14px;
-  top: calc(14px + (100% - 28px) * (2.5 / 6));
+  right: -30px;
+  top: calc(14px + (100% - 28px) * 2.5 / 6);
+  width: 34px;
+  height: 42px;
+  background: #334155; /* slate escuro: neutro e de alto contraste */
+  clip-path: polygon(0 28%, 55% 28%, 55% 5%, 100% 50%, 55% 95%, 55% 72%, 0 72%);
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
   transform: translateY(-50%);
-  width: 26px;
-  height: 34px;
-  background: var(--board-cell);
-  border: 2px solid #fff;
-  clip-path: polygon(0 25%, 55% 25%, 55% 0, 100% 50%, 55% 100%, 55% 75%, 0 75%);
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* ------------ Veículos ------------ */
@@ -107,16 +118,77 @@
 .btn-orange { background: #f97316; }
 
 .back-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
   background: #fff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
-  font-size: 20px;
-  font-weight: 800;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
   color: #475569;
+  transition: transform 0.12s ease, background 0.15s ease;
 }
-.back-btn:hover { background: #f1f5f9; }
+.back-btn svg { width: 22px; height: 22px; }
+.back-btn:hover { background: #f1f5f9; transform: translateX(-2px); }
+.back-btn:active { transform: scale(0.93); }
+
+/* Botão "X" de fechar/sair do modal */
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.modal-close:hover { background: #e2e8f0; color: #334155; }
+
+/* Link "Sair para o menu" */
+.btn-text {
+  color: #64748b;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 4px;
+}
+.btn-text:hover { color: #334155; text-decoration: underline; }
+
+/* Badges numerados da tela de Regras */
+.rule-badge {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* ------------ Recordes (pódio ouro/prata/bronze) ------------ */
+#records-body td { padding: 12px 8px; background: #f8fafc; }
+#records-body tr td:first-child { border-radius: 12px 0 0 12px; }
+#records-body tr td:last-child  { border-radius: 0 12px 12px 0; }
+
+.rank-1 td { background: #fff8e6; }
+.rank-2 td { background: #f4f6f8; }
+.rank-3 td { background: #fbf1e7; }
+.rank-1 td:first-child { box-shadow: inset 6px 0 0 #f5b301; }
+.rank-2 td:first-child { box-shadow: inset 6px 0 0 #9aa5b1; }
+.rank-3 td:first-child { box-shadow: inset 6px 0 0 #cd7f32; }
+.rank-1 .rec-score { color: #d69e00; }
+.rank-2 .rec-score { color: #6b7683; }
+.rank-3 .rec-score { color: #b06c2c; }
 
 /* ------------ Tela inicial (fundo com carrinhos) ------------ */
 #screen-home {

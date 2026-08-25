@@ -39,17 +39,20 @@ export function renderRecords(records) {
   }
   empty.classList.add("hidden");
 
+  const medals = ["🥇", "🥈", "🥉"];
   records.forEach((r, i) => {
     const data = new Date(r.played_at).toLocaleDateString("pt-BR");
     const nivel = r.level_numero === 0 ? "Teste" : r.level_numero;
+    const pos = i < 3 ? `${medals[i]} ${i + 1}º` : `${i + 1}º`;
     const tr = document.createElement("tr");
+    if (i < 3) tr.className = `rank-${i + 1}`;
     tr.innerHTML = `
-      <td class="py-2 px-2 font-bold text-slate-400">${i + 1}º</td>
-      <td class="py-2 px-2">${data}</td>
-      <td class="py-2 px-2">${nivel}</td>
-      <td class="py-2 px-2">${formatTime(r.time_seconds)}</td>
-      <td class="py-2 px-2">${r.moves}</td>
-      <td class="py-2 px-2 font-bold text-sky-600">${r.score}</td>
+      <td class="font-bold text-slate-500">${pos}</td>
+      <td>${data}</td>
+      <td>${nivel}</td>
+      <td>${formatTime(r.time_seconds)}</td>
+      <td>${r.moves}</td>
+      <td class="rec-score font-extrabold text-sky-600">${r.score}</td>
     `;
     body.appendChild(tr);
   });
