@@ -259,10 +259,14 @@ async function finishGame() {
   recordEl.classList.add("hidden");
   noteEl.classList.add("hidden");
 
+  const msgEl = document.getElementById("modal-message");
+
   if (solverUsed) { // RN05
+    msgEl.textContent = "Nível concluído com o Resolver.";
     noteEl.textContent = "Partida com ajuda do Resolver não entra nos recordes.";
     noteEl.classList.remove("hidden");
   } else {
+    msgEl.textContent = "Parabéns, você completou o nível.";
     try {
       const before = await getRecords(1);
       const best = before.length ? before[0].score : -1;
@@ -349,6 +353,7 @@ export async function playSolution() {
 
   playing = false;
   won = true;
+  finishGame();
 }
 
 export function closeSolve() {
