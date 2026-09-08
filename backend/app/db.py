@@ -1,11 +1,4 @@
-"""
-Camada de banco de dados (PostgreSQL via psycopg 3).
-
-- get_conn():   abre uma conexão usando a variável de ambiente DATABASE_URL.
-- init_db():    cria as tabelas se ainda não existirem.
-- seed_levels(): popula a tabela de níveis com os 10 mapas fixos
-                 (lidos de levels_data.json), só na primeira vez.
-"""
+"""Banco de dados (PostgreSQL via psycopg): conexão, tabelas e seed dos níveis."""
 
 import os
 import json
@@ -15,21 +8,16 @@ from pathlib import Path
 import psycopg
 from psycopg.types.json import Json
 
-DATABASE_URL = os.getenv(
-    "DATABASE_URL", "postgresql://rush:rush123@db:5432/rush_hour"
-)
-
-# Caminho do arquivo com os 10 níveis gerados (fica ao lado deste arquivo).
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://rush:rush123@db:5432/rush_hour")
 LEVELS_FILE = Path(__file__).parent / "levels_data.json"
 
 
 def get_conn():
-    """Abre uma conexão nova com o banco."""
     return psycopg.connect(DATABASE_URL)
 
 
 def wait_for_db(retries: int = 10, delay: float = 1.5):
-    """Tenta conectar algumas vezes (o banco pode demorar a aceitar conexões)."""
+    # O banco pode demorar a aceitar conexões ao subir.
     for tentativa in range(1, retries + 1):
         try:
             with get_conn():
@@ -41,7 +29,6 @@ def wait_for_db(retries: int = 10, delay: float = 1.5):
 
 
 def init_db():
-    """Cria as tabelas 'levels' e 'records' se não existirem."""
     with get_conn() as conn, conn.cursor() as cur:
         cur.execute(
             """
@@ -68,7 +55,7 @@ def init_db():
 
 
 def seed_levels():
-    """Insere os 10 níveis fixos, apenas se a tabela estiver vazia."""
+    # Insere os 10 níveis só se a tabela estiver vazia.
     if not LEVELS_FILE.exists():
         print(f"[db] AVISO: {LEVELS_FILE.name} não encontrado; nenhum nível inserido.")
         return
