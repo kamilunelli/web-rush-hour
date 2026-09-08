@@ -1,6 +1,5 @@
-// Configuração do browser-sync (servidor + live-reload).
-// usePolling: true é ESSENCIAL no Docker/Windows, onde os eventos de
-// alteração de arquivo não são propagados para dentro do container.
+// browser-sync: servidor + live-reload.
+// usePolling é essencial no Docker/Windows (eventos de arquivo não propagam).
 module.exports = {
   server: "./",
   port: 3000,
@@ -8,8 +7,5 @@ module.exports = {
   notify: false,
   ui: false,
   files: ["*.html", "src/js/**/*.js", "src/css/output.css"],
-  watchOptions: {
-    usePolling: true,
-    interval: 400,
-  },
+  watchOptions: { usePolling: true, interval: 400 },
 };

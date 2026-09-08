@@ -1,17 +1,13 @@
-/*
-  Entrada do Tailwind (v4) + estilos próprios do jogo.
-  O Tailwind cuida do layout/tipografia; aqui embaixo ficam os estilos
-  específicos do tabuleiro e dos veículos (posicionados via pixels no JS).
-*/
+/* Tailwind + estilos do tabuleiro/veículos (posicionados via pixels no JS). */
 @import "tailwindcss";
 
 :root {
-  --board-frame: #2b2f36;   /* moldura escura do tabuleiro */
-  --board-cell: #d8dade;    /* cor das células */
-  --board-line: #b7bac1;    /* linhas da grade */
+  --board-frame: #2b2f36;
+  --board-cell: #d8dade;
+  --board-line: #b7bac1;
 }
 
-/* ------------ Tabuleiro ------------ */
+/* Tabuleiro */
 .board {
   position: relative;
   width: min(92vw, 520px);
@@ -22,7 +18,6 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
-/* Área jogável 6x6 (onde os veículos são posicionados). */
 .board-grid {
   position: relative;
   width: 100%;
@@ -34,10 +29,10 @@
   border: 1px solid var(--board-line);
   border-radius: 6px;
   overflow: visible;
-  touch-action: none;  /* impede o scroll ao arrastar no celular */
+  touch-action: none; /* impede scroll ao arrastar no celular */
 }
 
-/* Abertura (buraco) na moldura direita, alinhada à 3ª linha. */
+/* Saída: abertura na moldura + seta (linha 3) */
 .exit-gap {
   position: absolute;
   right: -4px;
@@ -46,23 +41,21 @@
   width: 22px;
   background: var(--board-cell);
   border-radius: 2px 5px 5px 2px;
-  box-shadow: inset 5px 0 7px rgba(0, 0, 0, 0.3); /* sensação de túnel/buraco */
+  box-shadow: inset 5px 0 7px rgba(0, 0, 0, 0.3);
 }
-
-/* Seta de saída bem visível (verde, pulsando para a direita). */
 .exit-arrow {
   position: absolute;
   right: -30px;
   top: calc(14px + (100% - 28px) * 2.5 / 6);
   width: 34px;
   height: 42px;
-  background: #334155; /* slate escuro: neutro e de alto contraste */
+  background: #334155;
   clip-path: polygon(0 28%, 55% 28%, 55% 5%, 100% 50%, 55% 95%, 55% 72%, 0 72%);
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
   transform: translateY(-50%);
 }
 
-/* ------------ Veículos ------------ */
+/* Veículos */
 .vehicle {
   position: absolute;
   cursor: grab;
@@ -74,8 +67,6 @@
 }
 .vehicle:active { cursor: grabbing; }
 .vehicle.is-dragging { z-index: 5; filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.35)); }
-
-/* enquanto anima (encaixe/saída), transição suave */
 .vehicle.animate { transition: left 0.18s ease, top 0.18s ease, transform 0.18s ease; }
 
 .vehicle img {
@@ -84,20 +75,14 @@
   left: 50%;
   transform: translate(-50%, -50%);
   object-fit: contain;
-  /* o preflight do Tailwind aplica max-width:100%, o que travava os
-     sprites verticais (girados) na largura de 1 célula — desativamos aqui. */
-  max-width: none;
+  max-width: none; /* evita o max-width:100% do preflight travar sprites verticais */
   pointer-events: none;
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
 }
-/* veículo vertical: o sprite (horizontal) é girado 90° — tamanhos são
-   definidos no JS (largura/altura trocadas). */
-.vehicle.v img { transform: translate(-50%, -50%) rotate(90deg); }
-
-/* destaque do carro principal */
+.vehicle.v img { transform: translate(-50%, -50%) rotate(90deg); } /* vertical: gira o sprite */
 .vehicle.main { z-index: 3; }
 
-/* ------------ Botões ------------ */
+/* Botões */
 .btn {
   padding: 12px 18px;
   border-radius: 12px;
@@ -133,7 +118,6 @@
 .back-btn:hover { background: #f1f5f9; transform: translateX(-2px); }
 .back-btn:active { transform: scale(0.93); }
 
-/* Botão "X" de fechar/sair do modal */
 .modal-close {
   position: absolute;
   top: 12px;
@@ -152,7 +136,6 @@
 }
 .modal-close:hover { background: #e2e8f0; color: #334155; }
 
-/* Link "Sair para o menu" */
 .btn-text {
   color: #64748b;
   font-weight: 600;
@@ -161,7 +144,6 @@
 }
 .btn-text:hover { color: #334155; text-decoration: underline; }
 
-/* Badges numerados da tela de Regras */
 .rule-badge {
   flex: none;
   width: 34px;
@@ -175,7 +157,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
-/* ------------ Recordes (pódio ouro/prata/bronze) ------------ */
+/* Recordes: pódio ouro/prata/bronze */
 #records-body td { padding: 12px 8px; background: #f8fafc; }
 #records-body tr td:first-child { border-radius: 12px 0 0 12px; }
 #records-body tr td:last-child  { border-radius: 0 12px 12px 0; }
@@ -190,11 +172,10 @@
 .rank-2 .rec-score { color: #6b7683; }
 .rank-3 .rec-score { color: #b06c2c; }
 
-/* ------------ Tela inicial (fundo com carrinhos) ------------ */
+/* Tela inicial (fundo com carrinhos) */
 #screen-home {
   background: url("../assets/images/home-bg.svg") center / cover no-repeat;
 }
 
-/* ------------ Utilidades ------------ */
 .screen { display: none; }
 .screen.active { display: flex; }

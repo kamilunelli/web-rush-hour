@@ -1,14 +1,7 @@
-// Configurações globais do frontend.
+// Constantes globais do frontend.
 
-// A API roda na mesma máquina, porta 8000. Usamos o hostname atual
-// para funcionar tanto em "localhost" quanto se acessado por IP na rede.
+// API na mesma máquina, porta 8000 (funciona em localhost ou por IP).
 export const API_BASE = `http://${location.hostname}:8000`;
-
-// Pasta dos sprites já normalizados (horizontais, recortados).
-export const VEHICLES_PATH = "./src/assets/vehicles";
-
-// Tamanho do tabuleiro (6x6).
+export const VEHICLES_PATH = "./src/assets/vehicles"; // sprites normalizados
 export const GRID = 6;
-
-// Carro principal (o que precisa sair pela direita).
-export const MAIN_COLOR = "red-car";
+export const MAIN_COLOR = "red-car"; // carro que precisa sair

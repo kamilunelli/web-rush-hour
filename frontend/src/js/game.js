@@ -1,37 +1,36 @@
-// Lógica principal do jogo: tabuleiro, arrastar veículos, colisão,
-// cronômetro, movimentos, vitória, score e modal.
+// Núcleo do jogo: tabuleiro, arraste, colisão, cronômetro, vitória, score e solver.
 
 import { VEHICLES_PATH, GRID, MAIN_COLOR } from "./config.js";
-import { formatTime, showToast, goto } from "./ui.js";
-import { postRecord, getRecords } from "./api.js";
+import { formatTime, showToast, renderSolution } from "./ui.js";
+import { postRecord, getRecords, solve } from "./api.js";
 
-const PAD = 0.94;            // encolhe um pouco o sprite dentro da célula
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const PAD = 0.94; // encolhe o sprite dentro da célula
 const gridEl = document.getElementById("grid");
 
-// ---------- Estado ----------
-let levels = [];             // os 10 níveis vindos da API
-let queue = [];              // fila embaralhada (níveis sem repetir)
-let level = null;            // nível atual { numero, optimal_moves, vehicles }
-let vehicles = [];           // cópia mutável dos veículos (com row/col/el)
+// Estado
+let levels = [];
+let queue = [];              // fila embaralhada (sem repetir)
+let level = null;
+let vehicles = [];           // cópia mutável (com row/col/el)
 let moves = 0;
 let seconds = 0;
 let timerId = null;
-let solverUsed = false;      // RN05: se usar "Resolver", não salva recorde
-let isTest = false;          // nível de teste não conta para recordes
+let solverUsed = false;      // RN05
+let isTest = false;
 let won = false;
+let playing = false;         // trava o arraste durante a reprodução
+let currentSolution = null;
+let onRecordSaved = () => {};
 
-// Nível de teste: MUITO fácil (2 veículos, 2 movimentos) só para validar.
 const TEST_LEVEL = {
-  numero: 0, // 0 = nível de teste (conta nos recordes, aparece como "Teste")
+  numero: 0, // aparece como "Teste"
   optimal_moves: 2,
   vehicles: [
     { color: "red-car", orient: "H", len: 2, row: 2, col: 0 },
     { color: "green-car", orient: "V", len: 2, row: 1, col: 3 },
   ],
 };
-
-// callback para atualizar a lista de recordes na tela de Recordes
-let onRecordSaved = () => {};
 
 export function setLevels(data) {
   levels = data;
@@ -40,7 +39,7 @@ export function setOnRecordSaved(cb) {
   onRecordSaved = cb;
 }
 
-// ---------- Fila de níveis (aleatório, sem repetir) ----------
+// Fila de níveis (aleatório sem repetir)
 function reshuffle() {
   queue = levels.map((_, i) => i);
   for (let i = queue.length - 1; i > 0; i--) {
@@ -53,23 +52,16 @@ function nextIndex() {
   return queue.shift();
 }
 
-// ---------- Entrada pública ----------
-/** Chamado ao entrar na tela de jogo (botão JOGAR). */
+// Entradas públicas
 export function enterGame() {
-  if (!levels.length) {
-    showToast("Carregando níveis...");
-    return;
-  }
+  if (!levels.length) return showToast("Carregando níveis...");
   loadLevel(levels[nextIndex()], false);
 }
 export function enterTestLevel() {
   loadLevel(TEST_LEVEL, true);
 }
 export function playNext() {
-  if (!levels.length) {
-    showToast("Carregando níveis...");
-    return;
-  }
+  if (!levels.length) return showToast("Carregando níveis...");
   loadLevel(levels[nextIndex()], false);
 }
 export function playAgain() {
@@ -79,12 +71,10 @@ export function restart() {
   loadLevel(level, isTest);
 }
 
-// ---------- Carregar um nível ----------
 function loadLevel(lvObj, test) {
   level = lvObj;
   isTest = test;
-  // cópia profunda dos veículos (para não alterar o original)
-  vehicles = level.vehicles.map((v) => ({ ...v }));
+  vehicles = level.vehicles.map((v) => ({ ...v })); // não altera o original
   moves = 0;
   seconds = 0;
   won = false;
@@ -94,12 +84,11 @@ function loadLevel(lvObj, test) {
   document.getElementById("hud-moves").textContent = "0";
   document.getElementById("hud-time").textContent = "00:00";
   hideModal();
-
   renderBoard();
   startTimer();
 }
 
-// ---------- Cronômetro ----------
+// Cronômetro
 function startTimer() {
   stopTimer();
   timerId = setInterval(() => {
@@ -112,7 +101,7 @@ function stopTimer() {
   timerId = null;
 }
 
-// ---------- Renderização ----------
+// Renderização
 function cellSize() {
   return gridEl.clientWidth / GRID;
 }
@@ -137,25 +126,21 @@ function renderBoard() {
   positionAll();
 }
 
-/** Posiciona todos os veículos (em pixels) — chamado ao render e no resize. */
 function positionAll() {
   const c = cellSize();
   for (const v of vehicles) positionVehicle(v, c);
 }
 
 function positionVehicle(v, c = cellSize()) {
-  const wCells = v.orient === "H" ? v.len : 1;
-  const hCells = v.orient === "H" ? 1 : v.len;
-  const boxW = wCells * c;
-  const boxH = hCells * c;
+  const boxW = (v.orient === "H" ? v.len : 1) * c;
+  const boxH = (v.orient === "H" ? 1 : v.len) * c;
 
   v.el.style.left = `${v.col * c}px`;
   v.el.style.top = `${v.row * c}px`;
   v.el.style.width = `${boxW}px`;
   v.el.style.height = `${boxH}px`;
 
-  // O sprite é sempre horizontal; se o veículo é vertical, giramos 90°
-  // (por isso trocamos largura/altura da imagem).
+  // sprite é horizontal; se vertical, gira 90° (por isso troca W/H da imagem)
   if (v.orient === "V") {
     v.img.style.width = `${boxH * PAD}px`;
     v.img.style.height = `${boxW * PAD}px`;
@@ -165,12 +150,11 @@ function positionVehicle(v, c = cellSize()) {
   }
 }
 
-// Reposiciona ao redimensionar a janela.
 window.addEventListener("resize", () => {
   if (vehicles.length) positionAll();
 });
 
-// ---------- Colisão: alcance livre do veículo ----------
+// Colisão: até onde o veículo pode ir no eixo (RN01/RN02)
 function occupancyExcept(target) {
   const grid = Array.from({ length: GRID }, () => Array(GRID).fill(false));
   for (const v of vehicles) {
@@ -184,13 +168,12 @@ function occupancyExcept(target) {
   return grid;
 }
 
-/** Retorna [minPos, maxPos] que a coordenada (col p/ H, row p/ V) pode assumir. */
 function freeRange(v) {
   const grid = occupancyExcept(v);
   if (v.orient === "H") {
     let min = v.col;
     while (min - 1 >= 0 && !grid[v.row][min - 1]) min--;
-    let end = v.col + v.len - 1; // célula mais à direita
+    let end = v.col + v.len - 1;
     while (end + 1 < GRID && !grid[v.row][end + 1]) end++;
     return [min, end - v.len + 1];
   } else {
@@ -202,10 +185,10 @@ function freeRange(v) {
   }
 }
 
-// ---------- Arrastar (pointer events: mouse + toque) ----------
+// Arraste (pointer events: mouse + toque)
 function attachDrag(v) {
   v.el.addEventListener("pointerdown", (e) => {
-    if (won) return;
+    if (won || playing) return;
     e.preventDefault();
     v.el.setPointerCapture(e.pointerId);
     v.el.classList.add("is-dragging");
@@ -219,9 +202,8 @@ function attachDrag(v) {
 
     const onMove = (ev) => {
       const pointer = horizontal ? ev.clientX : ev.clientY;
-      const deltaCells = (pointer - startPointer) / c;
-      let pos = startPos + deltaCells;
-      pos = Math.max(minPos, Math.min(maxPos, pos)); // trava nos limites livres
+      let pos = startPos + (pointer - startPointer) / c;
+      pos = Math.max(minPos, Math.min(maxPos, pos)); // trava nos limites
       if (horizontal) v.el.style.left = `${pos * c}px`;
       else v.el.style.top = `${pos * c}px`;
     };
@@ -233,8 +215,7 @@ function attachDrag(v) {
       v.el.classList.remove("is-dragging");
 
       const pointer = horizontal ? ev.clientX : ev.clientY;
-      const deltaCells = (pointer - startPointer) / c;
-      let pos = Math.round(startPos + deltaCells);
+      let pos = Math.round(startPos + (pointer - startPointer) / c);
       pos = Math.max(minPos, Math.min(maxPos, pos));
 
       const moved = pos !== startPos;
@@ -243,10 +224,10 @@ function attachDrag(v) {
       v.el.classList.add("animate");
       positionVehicle(v, c);
 
-      if (moved) {
+      if (moved) { // arrastar N casas = 1 movimento (RN04)
         moves++;
         document.getElementById("hud-moves").textContent = moves;
-        checkWin(v);
+        checkWin();
       }
     };
 
@@ -255,23 +236,20 @@ function attachDrag(v) {
   });
 }
 
-// ---------- Vitória (RN03: extremidade direita do vermelho na col 5) ----------
-function checkWin(movedVehicle) {
+// Vitória: vermelho ocupando as colunas 4 e 5 da linha 2 (RN03)
+function checkWin() {
   const main = vehicles.find((v) => v.color === MAIN_COLOR);
   if (main.row === 2 && main.col === GRID - 2) {
     won = true;
     stopTimer();
-    // anima o carro saindo pela direita
-    const c = cellSize();
     main.el.classList.add("animate");
-    main.el.style.left = `${(GRID + 0.5) * c}px`;
+    main.el.style.left = `${(GRID + 0.5) * cellSize()}px`; // sai pela direita
     setTimeout(finishGame, 350);
   }
 }
 
 async function finishGame() {
   const score = computeScore(moves, seconds, level.optimal_moves);
-
   document.getElementById("modal-time").textContent = formatTime(seconds);
   document.getElementById("modal-moves").textContent = moves;
   document.getElementById("modal-score").textContent = score;
@@ -281,34 +259,25 @@ async function finishGame() {
   recordEl.classList.add("hidden");
   noteEl.classList.add("hidden");
 
-  if (solverUsed) {
-    // RN05: partida com "Resolver" não entra no ranking.
+  if (solverUsed) { // RN05
     noteEl.textContent = "Partida com ajuda do Resolver não entra nos recordes.";
     noteEl.classList.remove("hidden");
   } else {
     try {
       const before = await getRecords(1);
       const best = before.length ? before[0].score : -1;
-      await postRecord({
-        level_numero: level.numero,
-        time_seconds: seconds,
-        moves,
-        score,
-      });
+      await postRecord({ level_numero: level.numero, time_seconds: seconds, moves, score });
       if (score > best) recordEl.classList.remove("hidden");
-      onRecordSaved(); // atualiza a lista de recordes
+      onRecordSaved();
     } catch (err) {
       noteEl.textContent = "Não foi possível salvar o recorde (API offline?).";
       noteEl.classList.remove("hidden");
     }
   }
-
   showModal();
 }
 
-// ---------- Score (RN06) ----------
-// Recompensa poucos movimentos e pouco tempo; penaliza movimentos acima
-// do ótimo do A* e o tempo gasto.
+// Score (RN06): penaliza movimentos acima do ótimo e o tempo
 function computeScore(moves, timeSeconds, optimal) {
   const BASE = 10000;
   const penaltyMoves = Math.max(0, moves - optimal) * 100;
@@ -316,11 +285,9 @@ function computeScore(moves, timeSeconds, optimal) {
   return Math.max(100, BASE - penaltyMoves - penaltyTime);
 }
 
-// ---------- Modal ----------
+// Modais
 function showModal() {
-  const m = document.getElementById("modal");
-  m.classList.remove("hidden");
-  m.classList.add("flex");
+  document.getElementById("modal").classList.replace("hidden", "flex");
 }
 function hideModal() {
   const m = document.getElementById("modal");
@@ -328,15 +295,71 @@ function hideModal() {
   m.classList.remove("flex");
 }
 
-// Sair da partida (fecha o modal e para o cronômetro).
 export function exitToMenu() {
   stopTimer();
-  won = true; // impede novos arrastes até carregar outro nível
+  won = true;
   hideModal();
 }
 
-// ---------- Botão Resolver (inerte por enquanto) ----------
-export function onSolveClick() {
-  // O solver A* será implementado depois. Por ora, só avisa.
-  showToast("Solver em desenvolvimento 🚧");
+// Resolver (A*): RF06 pausa, RN05 invalida recorde, RN07 usa o estado original
+export async function onSolveClick() {
+  if (!level || won || playing) return;
+  solverUsed = true;
+  stopTimer();
+  try {
+    const sol = await solve(level.vehicles); // estado original (RN07)
+    currentSolution = sol;
+    renderSolution(sol); // RF07
+    showSolveModal();
+  } catch (err) {
+    showToast("Não foi possível resolver (API offline?).");
+  }
+}
+
+// Reproduz a solução no tabuleiro, do estado inicial até a saída
+export async function playSolution() {
+  if (!currentSolution) return;
+  hideSolveModal();
+  playing = true;
+  won = false;
+
+  vehicles = level.vehicles.map((v) => ({ ...v }));
+  renderBoard();
+  moves = 0;
+  document.getElementById("hud-moves").textContent = "0";
+  await sleep(450);
+
+  for (const s of currentSolution.steps) {
+    const v = vehicles.find((x) => x.color === s.color);
+    if (s.dir === "right") v.col += s.count;
+    else if (s.dir === "left") v.col -= s.count;
+    else if (s.dir === "down") v.row += s.count;
+    else if (s.dir === "up") v.row -= s.count;
+    v.el.classList.add("animate");
+    positionVehicle(v);
+    moves++;
+    document.getElementById("hud-moves").textContent = moves;
+    await sleep(550);
+  }
+
+  const main = vehicles.find((v) => v.color === MAIN_COLOR);
+  main.el.classList.add("animate");
+  main.el.style.left = `${(GRID + 0.5) * cellSize()}px`;
+  await sleep(500);
+
+  playing = false;
+  won = true;
+}
+
+export function closeSolve() {
+  hideSolveModal();
+}
+
+function showSolveModal() {
+  document.getElementById("solve-modal").classList.replace("hidden", "flex");
+}
+function hideSolveModal() {
+  const m = document.getElementById("solve-modal");
+  m.classList.add("hidden");
+  m.classList.remove("flex");
 }
