@@ -39,21 +39,31 @@ O jogador já joga de ponta a ponta:
 - Vitória quando o carro vermelho chega à saída, com modal (tempo, movimentos, score).
 - Score = `10000 − (movimentos acima do ótimo)×100 − (segundos)×15`.
 - Recordes salvos no PostgreSQL e ranking por score.
-- Botão **Resolver** presente, porém ainda sem ação (o solver A\* é a próxima etapa).
+- Botão **Resolver**: chama o **solver A\*** no backend, mostra o nº mínimo de
+  movimentos + passo a passo e pode reproduzir a solução no tabuleiro.
+  Usar o Resolver invalida o recorde da tentativa (RN05).
+
+## Solver A\* (backend)
+
+`app/solver.py` implementa a busca A\* conforme a formalização do projeto:
+custo uniforme de 1 por movimento e heurística admissível = nº de veículos
+bloqueando o caminho do vermelho até a saída. Validado: os movimentos mínimos
+do A\* batem com o ótimo (BFS) em todos os 10 níveis.
 
 ## Endpoints da API
 
-| Método | Rota        | Descrição                    |
-|--------|-------------|------------------------------|
-| GET    | `/health`   | Teste de vida                |
-| GET    | `/levels`   | Os 10 níveis fixos           |
-| GET    | `/records`  | Ranking das partidas         |
-| POST   | `/records`  | Salva uma partida concluída  |
+| Método | Rota        | Descrição                              |
+|--------|-------------|----------------------------------------|
+| GET    | `/health`   | Teste de vida                          |
+| GET    | `/levels`   | Os 10 níveis fixos                     |
+| GET    | `/records`  | Ranking das partidas                   |
+| POST   | `/records`  | Salva uma partida concluída            |
+| POST   | `/solve`    | Roda o A\* e devolve nº mínimo + passos |
 
 ## Estrutura
 
 ```
-backend/     API FastAPI (app/main.py, app/db.py, app/levels_data.json)
+backend/     API FastAPI (app/main.py, app/db.py, app/solver.py, app/levels_data.json)
 frontend/    HTML/CSS/JS + Tailwind (index.html, src/js/, src/assets/)
 docker-compose.yml
 ```

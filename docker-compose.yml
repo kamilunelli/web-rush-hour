@@ -1,8 +1,5 @@
-# Orquestra os 3 serviços do projeto. Onboarding dos amigos = "docker compose up".
-# Ninguém precisa instalar Python, Node, Tailwind ou Postgres — só ter o Docker.
-
+# Sobe os 3 serviços: banco, API e frontend. Uso: docker compose up
 services:
-  # ---------- Banco de dados ----------
   db:
     image: postgres:16
     container_name: rush_hour_db
@@ -12,42 +9,39 @@ services:
       POSTGRES_PASSWORD: rush123
       POSTGRES_DB: rush_hour
     ports:
-      - "5432:5432"           # acessível na sua máquina (ex.: DBeaver)
+      - "5432:5432"
     volumes:
       - rush_pgdata:/var/lib/postgresql/data
-    healthcheck:              # o backend só sobe quando o banco estiver pronto
+    healthcheck:
       test: ["CMD-SHELL", "pg_isready -U rush -d rush_hour"]
       interval: 5s
       timeout: 3s
       retries: 5
 
-  # ---------- API (FastAPI) ----------
   backend:
     build: ./backend
     container_name: rush_hour_backend
     restart: unless-stopped
     ports:
-      - "8000:8000"           # http://localhost:8000  (docs em /docs)
+      - "8000:8000"
     volumes:
-      - ./backend:/app        # espelha o código -> hot-reload ao editar
+      - ./backend:/app          # hot-reload ao editar
     environment:
-      # Dentro da rede do Docker, o host do banco é o nome do serviço: "db".
       DATABASE_URL: postgresql://rush:rush123@db:5432/rush_hour
     depends_on:
       db:
         condition: service_healthy
 
-  # ---------- Frontend (HTML/CSS/JS + Tailwind) ----------
   frontend:
     build: ./frontend
     container_name: rush_hour_frontend
     restart: unless-stopped
     ports:
-      - "3000:3000"           # http://localhost:3000  (site com live-reload)
-      - "3001:3001"           # painel do browser-sync (opcional)
+      - "3000:3000"             # site
+      - "3001:3001"             # painel do browser-sync
     volumes:
-      - ./frontend:/app       # espelha o código -> Tailwind/live-reload ao editar
-      - /app/node_modules     # mantém o node_modules do container (não usa o da máquina)
+      - ./frontend:/app         # hot-reload ao editar
+      - /app/node_modules       # usa o node_modules do container
 
 volumes:
   rush_pgdata:
