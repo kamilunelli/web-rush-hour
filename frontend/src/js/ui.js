@@ -1,6 +1,6 @@
 // Interface: navegação, toast, formatação, solução e recordes.
 
-const screens = ["home", "rules", "records", "game", "performance"];
+const screens = ["home", "rules", "records", "game", "performance", "levels"];
 
 export function goto(name) {
   for (const s of screens) {
@@ -30,6 +30,29 @@ const COLOR_PT = {
   "pink-truck": "Rosa", "purple-truck": "Roxo",
 };
 const DIR_ARROW = { left: "⬅", right: "➡", up: "⬆", down: "⬇" };
+
+// Dificuldade a partir da solução ótima.
+function difficulty(optimal) {
+  if (optimal <= 5) return { label: "Fácil", color: "text-emerald-600" };
+  if (optimal <= 12) return { label: "Médio", color: "text-amber-600" };
+  return { label: "Difícil", color: "text-red-600" };
+}
+
+// Grade de seleção de níveis.
+export function renderLevels(levels, onPick) {
+  const grid = document.getElementById("levels-grid");
+  grid.innerHTML = "";
+  levels.forEach((l) => {
+    const d = difficulty(l.optimal_moves);
+    const btn = document.createElement("button");
+    btn.className = "level-card";
+    btn.innerHTML = `
+      <span class="text-2xl font-extrabold text-slate-700">${l.numero}</span>
+      <span class="text-xs font-bold ${d.color}">${d.label}</span>`;
+    btn.addEventListener("click", () => onPick(l.numero));
+    grid.appendChild(btn);
+  });
+}
 
 // Dashboard do solver: nº mínimo + passo a passo (RF07)
 export function renderSolution(sol) {

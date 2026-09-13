@@ -11,7 +11,6 @@ const gridEl = document.getElementById("grid");
 
 // Estado
 let levels = [];
-let queue = [];              // fila embaralhada (sem repetir)
 let level = null;
 let vehicles = [];           // cópia mutável (com row/col/el)
 let moves = 0;
@@ -40,30 +39,19 @@ export function setOnRecordSaved(cb) {
   onRecordSaved = cb;
 }
 
-// Fila de níveis (aleatório sem repetir)
-function reshuffle() {
-  queue = levels.map((_, i) => i);
-  for (let i = queue.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [queue[i], queue[j]] = [queue[j], queue[i]];
-  }
-}
-function nextIndex() {
-  if (queue.length === 0) reshuffle();
-  return queue.shift();
-}
-
 // Entradas públicas
-export function enterGame() {
-  if (!levels.length) return showToast("Carregando níveis...");
-  loadLevel(levels[nextIndex()], false);
+export function enterLevel(numero) {
+  const lv = levels.find((l) => l.numero === numero);
+  if (lv) loadLevel(lv, false);
 }
 export function enterTestLevel() {
   loadLevel(TEST_LEVEL, true);
 }
-export function playNext() {
-  if (!levels.length) return showToast("Carregando níveis...");
-  loadLevel(levels[nextIndex()], false);
+export function currentNumero() {
+  return level ? level.numero : null;
+}
+export function hasLevel(numero) {
+  return levels.some((l) => l.numero === numero);
 }
 export function playAgain() {
   loadLevel(level, isTest);

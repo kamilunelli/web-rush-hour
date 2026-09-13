@@ -172,6 +172,21 @@
 .rank-2 .rec-score { color: #6b7683; }
 .rank-3 .rec-score { color: #b06c2c; }
 
+.level-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  aspect-ratio: 1 / 1;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.1s ease, box-shadow 0.15s ease;
+}
+.level-card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); }
+.level-card:active { transform: translateY(0); }
+
 .detail-btn {
   background: #3b82f6;
   color: #fff;
