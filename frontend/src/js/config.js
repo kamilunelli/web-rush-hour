@@ -6,7 +6,7 @@ const isLocal = ["localhost", "127.0.0.1"].includes(location.hostname);
 // >>> troque a URL abaixo pela do seu serviço no Render depois de criá-lo <<<
 export const API_BASE = isLocal
   ? "http://localhost:8000"
-  : "https://rush-hour-api.onrender.com";
+  : "https://rush-hour-e9f7.onrender.com";
 
 export const VEHICLES_PATH = "./src/assets/vehicles"; // sprites normalizados
 export const GRID = 6;
