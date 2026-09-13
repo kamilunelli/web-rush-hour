@@ -2,7 +2,8 @@
 
 import { VEHICLES_PATH, GRID, MAIN_COLOR } from "./config.js";
 import { formatTime, showToast, renderSolution } from "./ui.js";
-import { postRecord, getRecords, solve } from "./api.js";
+import { solve } from "./api.js";
+import { getRecords, addRecord } from "./store.js";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const PAD = 0.94; // encolhe o sprite dentro da célula
@@ -267,16 +268,10 @@ async function finishGame() {
     noteEl.classList.remove("hidden");
   } else {
     msgEl.textContent = "Parabéns, você completou o nível.";
-    try {
-      const before = await getRecords(1);
-      const best = before.length ? before[0].score : -1;
-      await postRecord({ level_numero: level.numero, time_seconds: seconds, moves, score });
-      if (score > best) recordEl.classList.remove("hidden");
-      onRecordSaved();
-    } catch (err) {
-      noteEl.textContent = "Não foi possível salvar o recorde (API offline?).";
-      noteEl.classList.remove("hidden");
-    }
+    const best = getRecords(1)[0]?.score ?? -1;
+    addRecord({ level_numero: level.numero, time_seconds: seconds, moves, score });
+    if (score > best) recordEl.classList.remove("hidden");
+    onRecordSaved();
   }
   showModal();
 }

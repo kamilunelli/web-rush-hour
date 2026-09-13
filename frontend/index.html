@@ -84,6 +84,7 @@
             <th class="py-2 px-2">Tempo</th>
             <th class="py-2 px-2">Movimentos</th>
             <th class="py-2 px-2">Score</th>
+            <th class="py-2 px-2"></th>
           </tr>
         </thead>
         <tbody id="records-body"></tbody>
@@ -92,6 +93,17 @@
         Nenhuma partida registrada ainda. Complete uma partida (sem usar o "Resolver")!
       </p>
     </div>
+  </section>
+
+  <!-- Tela de desempenho -->
+  <section id="screen-performance" class="screen min-h-screen flex-col items-center p-6">
+    <header class="w-full max-w-3xl relative flex items-center justify-center mb-6 h-12">
+      <button data-goto="records" class="back-btn absolute left-0" aria-label="Voltar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <h1 class="text-3xl font-extrabold tracking-wide">DESEMPENHO</h1>
+    </header>
+    <div id="perf-content" class="w-full max-w-3xl"></div>
   </section>
 
   <!-- Tela do jogo -->

@@ -1,6 +1,6 @@
 // Interface: navegação, toast, formatação, solução e recordes.
 
-const screens = ["home", "rules", "records", "game"];
+const screens = ["home", "rules", "records", "game", "performance"];
 
 export function goto(name) {
   for (const s of screens) {
@@ -48,8 +48,8 @@ export function renderSolution(sol) {
   });
 }
 
-// Tabela de recordes com pódio nos 3 primeiros (RF08)
-export function renderRecords(records) {
+// Tabela de recordes com pódio nos 3 primeiros (RF08) e botão "Detalhar"
+export function renderRecords(records, onDetail) {
   const body = document.getElementById("records-body");
   const empty = document.getElementById("records-empty");
   body.innerHTML = "";
@@ -75,6 +75,13 @@ export function renderRecords(records) {
       <td>${r.moves}</td>
       <td class="rec-score font-extrabold text-sky-600">${r.score}</td>
     `;
+    const td = document.createElement("td");
+    const btn = document.createElement("button");
+    btn.className = "detail-btn";
+    btn.textContent = "Detalhar";
+    btn.addEventListener("click", () => onDetail(r));
+    td.appendChild(btn);
+    tr.appendChild(td);
     body.appendChild(tr);
   });
 }

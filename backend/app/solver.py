@@ -33,6 +33,7 @@ def solve(vehicles):
         r, c = state[main_i]
         return r == 2 and c == EXIT_COL
 
+    # Função heurística
     def heuristic(state):
         occ = occupancy(state)
         r, c = state[main_i]
@@ -44,8 +45,8 @@ def solve(vehicles):
                 blockers.add(who)
         return len(blockers)
 
+    # Função sucessora
     def neighbors(state):
-        # Cada destino livre no eixo = 1 ação.
         occ = occupancy(state)
         for i, (r, c) in enumerate(state):
             L, o, _ = meta[i]

@@ -172,6 +172,17 @@
 .rank-2 .rec-score { color: #6b7683; }
 .rank-3 .rec-score { color: #b06c2c; }
 
+.detail-btn {
+  background: #3b82f6;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: filter 0.15s ease;
+}
+.detail-btn:hover { filter: brightness(1.08); }
+
 /* Tela inicial (fundo com carrinhos) */
 #screen-home {
   background: url("../assets/images/home-bg.svg") center / cover no-repeat;

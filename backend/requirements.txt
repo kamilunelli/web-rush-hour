@@ -1,4 +1,2 @@
 fastapi           # framework da API
 uvicorn[standard] # servidor ASGI
-psycopg[binary]   # driver do PostgreSQL
-python-dotenv     # variáveis de ambiente

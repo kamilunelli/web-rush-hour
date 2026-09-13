@@ -1,23 +1,5 @@
-# Sobe os 3 serviços: banco, API e frontend. Uso: docker compose up
+# Sobe os 2 serviços: API e frontend. Uso: docker compose up
 services:
-  db:
-    image: postgres:16
-    container_name: rush_hour_db
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: rush
-      POSTGRES_PASSWORD: rush123
-      POSTGRES_DB: rush_hour
-    ports:
-      - "5432:5432"
-    volumes:
-      - rush_pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U rush -d rush_hour"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
-
   backend:
     build: ./backend
     container_name: rush_hour_backend
@@ -26,11 +8,6 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app          # hot-reload ao editar
-    environment:
-      DATABASE_URL: postgresql://rush:rush123@db:5432/rush_hour
-    depends_on:
-      db:
-        condition: service_healthy
 
   frontend:
     build: ./frontend
@@ -42,6 +19,3 @@ services:
     volumes:
       - ./frontend:/app         # hot-reload ao editar
       - /app/node_modules       # usa o node_modules do container
-
-volumes:
-  rush_pgdata:

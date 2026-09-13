@@ -1,12 +1,19 @@
 // Bootstrap: carrega dados e conecta os eventos dos botões.
 
-import { getLevels, getRecords } from "./api.js";
+import { getLevels } from "./api.js";
+import { getRecords } from "./store.js";
 import { goto, renderRecords, showToast } from "./ui.js";
+import { renderPerformance } from "./performance.js";
 import * as game from "./game.js";
+
+const optimalByLevel = { 0: 2 }; // 0 = nível de teste
+let currentRecords = [];
 
 async function boot() {
   try {
-    game.setLevels(await getLevels());
+    const levels = await getLevels();
+    game.setLevels(levels);
+    levels.forEach((l) => (optimalByLevel[l.numero] = l.optimal_moves));
   } catch (err) {
     showToast("API offline — inicie o backend (docker compose up).", 4000);
     console.error(err);
@@ -45,12 +52,16 @@ async function boot() {
   document.getElementById("solve-ok").addEventListener("click", game.closeSolve);
 }
 
-async function loadRecords() {
-  try {
-    renderRecords(await getRecords(10));
-  } catch (err) {
-    console.error(err);
-  }
+// Abre a tela de desempenho de um record.
+function openPerformance(rec) {
+  const optimal = optimalByLevel[rec.level_numero] ?? rec.moves;
+  goto("performance");
+  renderPerformance(rec, optimal, currentRecords);
+}
+
+function loadRecords() {
+  currentRecords = getRecords(10);
+  renderRecords(currentRecords, openPerformance);
 }
 
 boot();
