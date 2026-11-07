@@ -5,12 +5,15 @@ import { getRecords } from "./store.js";
 import { goto, renderRecords, renderLevels, showToast } from "./ui.js";
 import { renderPerformance } from "./performance.js";
 import * as game from "./game.js";
+import * as arduino from "./arduino.js";
 
 const optimalByLevel = { 0: 2 }; // 0 = nível de teste
 let levelsData = [];
 let currentRecords = [];
 
 async function boot() {
+  arduino.init(); // Modo Arduino não depende da lista de níveis da API
+
   try {
     levelsData = await getLevels();
     game.setLevels(levelsData);
@@ -27,6 +30,8 @@ async function boot() {
     btn.addEventListener("click", () => {
       const dest = btn.dataset.goto;
       goto(dest);
+      if (dest === "arduino") arduino.enter();
+      else arduino.leave();
       if (dest === "levels") renderLevels(levelsData, playLevel);
       if (dest === "records") loadRecords();
     });
