@@ -25,10 +25,10 @@ const SPRITES = [
 const LEVELS = [
   { numero: 1, label: "Tutorial", cls: "lvl-tutorial" },
   { numero: 2, label: "Fácil", cls: "lvl-easy" },
-  { numero: 3, label: "Médio", cls: "lvl-medium" },
-  { numero: 4, label: "Médio", cls: "lvl-medium" },
-  { numero: 5, label: "Difícil", cls: "lvl-hard" },
-  { numero: 6, label: "Difícil", cls: "lvl-hard" },
+  { numero: 3, label: "Fácil", cls: "lvl-easy" },
+  { numero: 4, label: "Fácil", cls: "lvl-easy" },
+  { numero: 5, label: "Desafio", cls: "lvl-challenge" },
+  { numero: 6, label: "Desafio", cls: "lvl-challenge" },
 ];
 
 const STATUS = { IDLE: 0, PLAYING: 1, WON: 2, COMPLETED: 3 };
@@ -283,31 +283,48 @@ function positionAll(animate = true) {
     el.classList.toggle("focus", isCurrent && !state.selected);
     el.classList.toggle("picked", isCurrent && state.selected);
   }
-  // carro vermelho "sai" do tabuleiro na vitória, como no jogo web
-  if (finished) {
-    const red = state.vehicles.find((v) => v.color === MAIN_COLOR);
-    if (red && vehicleEls[red.idx]) vehicleEls[red.idx].style.left = `${(GRID + 0.5) * c}px`;
+  // Vitória: o vermelho avança 1 casa pela saída e some (sem ficar por cima
+  // do painel ao lado), e a moldura do tabuleiro brilha em verde.
+  const red = state.vehicles.find((v) => v.color === MAIN_COLOR);
+  const redEl = red && vehicleEls[red.idx];
+  if (redEl) {
+    redEl.classList.toggle("exited", finished);
+    if (finished) redEl.style.left = `${(GRID - 1.4) * c}px`;
   }
+  $("ard-board").classList.toggle("won", finished);
 }
 
-// Mostra o que mudou no tabuleiro físico ("Azul ➡ 1")
+// Mostra o que mudou no tabuleiro físico ("Azul ➡ 2x"). Passos seguidos do
+// mesmo carro na mesma direção são 1 movimento só (o Arduino não incrementa
+// a contagem), então viram uma linha só no histórico.
 function logMovement(prev, next) {
   if (!prev || prev.vehicles.length !== next.vehicles.length) return;
+  if (prev.moves > 0 && next.moves === 0) { clearLog(); return; } // reiniciou (Y)
   for (const v of next.vehicles) {
     const p = prev.vehicles[v.idx];
     const dRow = v.row - p.row;
     const dCol = v.col - p.col;
     if (!dRow && !dCol) continue;
     const dir = dCol > 0 ? "right" : dCol < 0 ? "left" : dRow > 0 ? "down" : "up";
-    addLog(`${COLOR_PT[v.color] || v.color} ${DIR_ARROW[dir]}`, v.color);
+    addLog(v.color, dir, Math.abs(dRow || dCol), next.moves === prev.moves);
   }
 }
 
-function addLog(text, color) {
+function addLog(color, dir, cells, sameMove) {
   const ol = $("ard-log");
-  const li = document.createElement("li");
-  li.innerHTML = `<span class="log-dot" data-color="${color || ""}"></span>${text}`;
-  ol.prepend(li);
+  const last = ol.firstElementChild;
+  if (sameMove && last && last.dataset.color === color && last.dataset.dir === dir) {
+    last.dataset.count = +last.dataset.count + cells;
+  } else {
+    const li = document.createElement("li");
+    li.dataset.color = color;
+    li.dataset.dir = dir;
+    li.dataset.count = cells;
+    ol.prepend(li);
+  }
+  const li = ol.firstElementChild;
+  li.innerHTML = `<span class="log-dot" data-color="${color}"></span>
+    ${COLOR_PT[color] || color} ${DIR_ARROW[dir]} <span class="text-slate-400">${li.dataset.count}x</span>`;
   while (ol.children.length > 12) ol.lastChild.remove();
 }
 
@@ -315,6 +332,7 @@ function clearLog() {
   $("ard-log").innerHTML = "";
   $("ard-steps").innerHTML = "";
   $("ard-steps-box").classList.add("hidden");
+  setSolverLabel("");
 }
 
 // ---------------------------------------------------------------------------
