@@ -41,7 +41,7 @@
       Este navegador não tem Web Serial. Abra o site no <b>Google Chrome</b> ou no <b>Microsoft Edge</b> (computador).
     </p>
 
-    <div class="flex flex-col md:flex-row items-center md:items-start gap-6 w-full max-w-4xl justify-center">
+    <div class="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-14 w-full max-w-4xl justify-center">
       <div class="flex flex-col items-center gap-3">
         <div class="ard-hud">
           <span>NÍVEL <b id="ard-hud-level">-</b></span>
@@ -49,13 +49,22 @@
           <span>ÓTIMO <b id="ard-hud-optimal">-</b></span>
           <span>VITÓRIAS <b id="ard-hud-wins">0</b></span>
         </div>
-        <div class="board ard-board">
+        <div id="ard-board" class="board ard-board">
           <div class="board-grid" id="ard-grid"></div>
           <div class="exit-gap"></div>
           <div class="exit-arrow"></div>
           <div id="ard-empty" class="ard-empty">Nenhum nível em jogo</div>
         </div>
         <p id="ard-status" class="ard-status" data-status="off">Conecte o Arduino para jogar</p>
+
+        <!-- Controles: sempre visíveis -->
+        <ul class="ard-controls" aria-label="Controles">
+          <li><span class="pad-key pad-dpad">✚</span><span><b>Direcional</b> escolhe ou move o carro</span></li>
+          <li><span class="pad-key pad-a">A</span><span><b>Seleciona</b> o carro / próximo nível</span></li>
+          <li><span class="pad-key pad-x">X</span><span><b>Próximo</b> carro</span></li>
+          <li><span class="pad-key pad-y">Y</span><span><b>Reinicia</b> o nível</span></li>
+        </ul>
+        <p class="text-xs text-slate-400">Sem controle? Teclado: setas, A (ou Enter), X e Y.</p>
       </div>
 
       <aside class="ard-panel">
@@ -77,16 +86,6 @@
 
         <h2>No tabuleiro físico</h2>
         <ol id="ard-log" class="ard-log"></ol>
-
-        <details class="text-sm text-slate-500">
-          <summary class="cursor-pointer font-semibold">Controles</summary>
-          <ul class="mt-2 space-y-1">
-            <li><b>Direcional / analógico</b>: escolher ou mover o carro (teclado: setas)</li>
-            <li><b>A</b>: selecionar carro / próximo nível (teclado: A ou Enter)</li>
-            <li><b>X</b>: próximo carro (teclado: X)</li>
-            <li><b>Y</b>: reiniciar o nível (teclado: Y)</li>
-          </ul>
-        </details>
       </aside>
     </div>
   </section>
