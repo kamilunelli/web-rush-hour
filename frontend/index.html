@@ -56,37 +56,42 @@
           <div id="ard-empty" class="ard-empty">Nenhum nível em jogo</div>
         </div>
         <p id="ard-status" class="ard-status" data-status="off">Conecte o Arduino para jogar</p>
-
-        <!-- Controles: sempre visíveis -->
-        <ul class="ard-controls" aria-label="Controles">
-          <li><span class="pad-key pad-dpad">✚</span><span><b>Direcional</b> escolhe ou move o carro</span></li>
-          <li><span class="pad-key pad-a">A</span><span><b>Seleciona</b> o carro / próximo nível</span></li>
-          <li><span class="pad-key pad-x">X</span><span><b>Próximo</b> carro</span></li>
-          <li><span class="pad-key pad-y">Y</span><span><b>Reinicia</b> o nível</span></li>
-        </ul>
-        <p class="text-xs text-slate-400">Sem controle? Teclado: setas, A (ou Enter), X e Y.</p>
       </div>
 
-      <aside class="ard-panel">
-        <h2>Níveis</h2>
-        <div id="ard-levels" class="ard-levels"></div>
+      <div class="flex flex-col items-center gap-4">
+        <aside class="ard-panel">
+          <h2>Níveis</h2>
+          <div id="ard-levels" class="ard-levels"></div>
 
-        <div class="grid grid-cols-2 gap-2">
-          <button id="ard-restart" class="btn btn-orange">REINICIAR</button>
-          <button id="ard-cancel"  class="btn btn-gray">CANCELAR</button>
-          <button id="ard-hint"    class="btn btn-blue">DICA</button>
-          <button id="ard-solve"   class="btn btn-yellow">RESOLVER</button>
+          <div class="grid grid-cols-2 gap-2">
+            <button id="ard-restart" class="btn btn-orange">REINICIAR</button>
+            <button id="ard-first"   class="btn btn-green">« FASE 1</button>
+            <button id="ard-hint"    class="btn btn-blue">DICA</button>
+            <button id="ard-solve"   class="btn btn-yellow">RESOLVER</button>
+          </div>
+          <p id="ard-solver-label" class="text-sm text-slate-500 min-h-5"></p>
+
+          <div id="ard-steps-box" class="hidden">
+            <h2>Solução (A*)</h2>
+            <ol id="ard-steps" class="ard-steps"></ol>
+          </div>
+
+          <h2>No tabuleiro físico</h2>
+          <ol id="ard-log" class="ard-log"></ol>
+        </aside>
+
+        <!-- Controles: sempre visíveis -->
+        <div class="ard-controls-box">
+          <h2>Controles</h2>
+          <ul class="ard-controls" aria-label="Controles">
+            <li><span class="pad-key pad-dpad">✚</span><span><b>Direcional</b> escolhe ou move o carro</span></li>
+            <li><span class="pad-key pad-a">A</span><span><b>Seleciona</b> o carro / próximo nível</span></li>
+            <li><span class="pad-key pad-x">X</span><span><b>Próximo</b> carro</span></li>
+            <li><span class="pad-key pad-y">Y</span><span><b>Reinicia</b> o nível</span></li>
+          </ul>
+          <p class="text-xs text-slate-400 mt-2">Sem controle? Teclado: setas, A (ou Enter), X e Y.</p>
         </div>
-        <p id="ard-solver-label" class="text-sm text-slate-500 min-h-5"></p>
-
-        <div id="ard-steps-box" class="hidden">
-          <h2>Solução (A*)</h2>
-          <ol id="ard-steps" class="ard-steps"></ol>
-        </div>
-
-        <h2>No tabuleiro físico</h2>
-        <ol id="ard-log" class="ard-log"></ol>
-      </aside>
+      </div>
     </div>
   </section>
 
