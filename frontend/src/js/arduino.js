@@ -4,7 +4,7 @@
 //
 // Protocolo (ver HoraDoRush.ino no repositório hardware-rush-hour):
 //   site -> Arduino: A X Y (botões), D E W S (direita/esquerda/cima/baixo),
-//                    L<n> (carregar nível), C<i> (selecionar carro i), Q (cancelar), ? (estado)
+//                    L<n> (carregar nível), C<i> (selecionar carro i), ? (estado)
 //   Arduino -> site: "@HELLO <versão> <níveis>"
 //                    "@S <nível> <movs> <ótimo> <vitórias> <status> <atual> <selecionado> <carros...>"
 //                    carro = 5 caracteres: linha, coluna, tamanho, H/V, cor (ex.: 202H0)
@@ -25,8 +25,8 @@ const SPRITES = [
 const LEVELS = [
   { numero: 1, label: "Tutorial", cls: "lvl-tutorial" },
   { numero: 2, label: "Fácil", cls: "lvl-easy" },
-  { numero: 3, label: "Fácil", cls: "lvl-easy" },
-  { numero: 4, label: "Fácil", cls: "lvl-easy" },
+  { numero: 3, label: "Médio", cls: "lvl-medium" },
+  { numero: 4, label: "Médio", cls: "lvl-medium" },
   { numero: 5, label: "Desafio", cls: "lvl-challenge" },
   { numero: 6, label: "Desafio", cls: "lvl-challenge" },
 ];
@@ -62,7 +62,7 @@ export function init() {
   renderLevelButtons();
   $("ard-connect").addEventListener("click", () => (connected ? disconnect() : connect()));
   $("ard-restart").addEventListener("click", () => { stopPlayback(); send("Y"); });
-  $("ard-cancel").addEventListener("click", cancel);
+  $("ard-first").addEventListener("click", () => { stopPlayback(); send("L1"); });
   $("ard-solve").addEventListener("click", () => runSolver(false));
   $("ard-hint").addEventListener("click", () => runSolver(true));
   window.addEventListener("resize", () => state && positionAll());
@@ -351,11 +351,6 @@ function renderLevelButtons() {
   }
 }
 
-function cancel() {
-  stopPlayback();
-  send("Q");
-}
-
 function stopPlayback() {
   if (playing) showToast("Resolução interrompida.");
   playToken++;
@@ -501,7 +496,7 @@ function updateUi() {
   $("ard-solve").disabled = !canPlay || playing;
   $("ard-hint").disabled = !canPlay || playing;
   $("ard-restart").disabled = !connected || !s || s.status === STATUS.IDLE;
-  $("ard-cancel").disabled = !connected || ((!s || s.status === STATUS.IDLE) && !playing);
+  $("ard-first").disabled = !connected;
   document.querySelectorAll(".ard-level").forEach((btn) => {
     btn.disabled = !connected;
     btn.classList.toggle("active", !!s && s.status !== STATUS.IDLE && +btn.dataset.level === s.level);
