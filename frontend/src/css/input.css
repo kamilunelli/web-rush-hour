@@ -205,3 +205,146 @@
 
 .screen { display: none; }
 .screen.active { display: flex; }
+
+/* ---------------------------------------------------------------------- */
+/* Modo Arduino                                                           */
+/* ---------------------------------------------------------------------- */
+.ard-connbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+.ard-warning {
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+  color: #92400e;
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+}
+
+.ard-board { width: min(92vw, 440px); }
+.ard-empty {
+  position: absolute;
+  inset: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.ard-hud {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 16px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #475569;
+}
+.ard-hud b { color: #0284c7; font-size: 1.05rem; }
+
+.ard-status {
+  font-weight: 800;
+  text-align: center;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: #475569;
+}
+.ard-status[data-status="1"] { background: #e0f2fe; color: #0369a1; }
+.ard-status[data-status="2"],
+.ard-status[data-status="3"] { background: #dcfce7; color: #15803d; animation: ard-pulse 1s ease-in-out infinite; }
+
+/* Carro em foco (piscando, como na matriz) e carro selecionado */
+.vehicle.mirror { cursor: default; }
+.vehicle.focus img { animation: ard-blink 0.7s steps(1) infinite; }
+.vehicle.picked { z-index: 4; }
+.vehicle.picked img { filter: drop-shadow(0 0 6px #facc15) drop-shadow(0 0 3px #facc15); animation: ard-pulse 0.7s ease-in-out infinite; }
+
+@keyframes ard-blink { 50% { opacity: 0.35; } }
+@keyframes ard-pulse { 50% { opacity: 0.7; } }
+
+.ard-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(92vw, 340px);
+  background: #fff;
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+.ard-panel h2 {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.ard-levels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.ard-level {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 4px;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  transition: transform 0.1s ease, border-color 0.15s ease;
+}
+.ard-level:hover:not(:disabled) { transform: translateY(-2px); }
+.ard-level:disabled { opacity: 0.45; cursor: not-allowed; }
+.ard-level .num { font-size: 1.3rem; font-weight: 800; color: #334155; }
+.ard-level .lbl { font-size: 0.7rem; font-weight: 700; }
+.ard-level.lvl-tutorial .lbl { color: #0284c7; }
+.ard-level.lvl-easy .lbl { color: #059669; }
+.ard-level.lvl-medium .lbl { color: #d97706; }
+.ard-level.lvl-hard .lbl { color: #dc2626; }
+.ard-level.active { border-color: #22c55e; background: #f0fdf4; }
+
+.ard-steps, .ard-log {
+  max-height: 180px;
+  overflow-y: auto;
+  font-size: 0.9rem;
+}
+.ard-steps li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: 8px;
+}
+.ard-steps li.done { opacity: 0.45; }
+.ard-steps li.current { background: #fef9c3; font-weight: 700; }
+
+.ard-log li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+.ard-log li:first-child { font-weight: 700; }
+.log-dot { width: 10px; height: 10px; border-radius: 50%; background: #94a3b8; flex: none; }
+.log-dot[data-color="red-car"] { background: #ef4444; }
+.log-dot[data-color="blue-car"] { background: #3b82f6; }
+.log-dot[data-color="green-car"] { background: #22c55e; }
+.log-dot[data-color="yellow-car"] { background: #eab308; }
+.log-dot[data-color="purple-truck"] { background: #8b5cf6; }
+.log-dot[data-color="cyan-truck"] { background: #06b6d4; }
+.log-dot[data-color="pink-truck"] { background: #ec4899; }
+.log-dot[data-color="orange-truck"] { background: #f97316; }

@@ -1,6 +1,6 @@
 // Interface: navegação, toast, formatação, solução e recordes.
 
-const screens = ["home", "rules", "records", "game", "performance", "levels"];
+const screens = ["home", "rules", "records", "game", "performance", "levels", "arduino"];
 
 export function goto(name) {
   for (const s of screens) {
@@ -23,13 +23,13 @@ export function formatTime(totalSeconds) {
   return `${m}:${s}`;
 }
 
-const COLOR_PT = {
+export const COLOR_PT = {
   "red-car": "Vermelho", "blue-car": "Azul", "green-car": "Verde",
   "yellow-car": "Amarelo", "mint-car": "Verde-menta", "lilac-car": "Lilás",
   "brown-truck": "Marrom", "cyan-truck": "Ciano", "orange-truck": "Laranja",
   "pink-truck": "Rosa", "purple-truck": "Roxo",
 };
-const DIR_ARROW = { left: "⬅", right: "➡", up: "⬆", down: "⬇" };
+export const DIR_ARROW = { left: "⬅", right: "➡", up: "⬆", down: "⬇" };
 
 // Dificuldade a partir da solução ótima.
 function difficulty(optimal) {
