@@ -240,6 +240,45 @@
   font-weight: 700;
   pointer-events: none;
 }
+.ard-empty.hidden { display: none; }
+
+/* Vitória: vermelho sai pela saída e some; moldura brilha */
+.vehicle.exited { opacity: 0; transition: left 0.5s ease, opacity 0.45s ease 0.15s; }
+.ard-board.won { animation: ard-won 1s ease-in-out infinite; }
+@keyframes ard-won {
+  50% { box-shadow: 0 0 0 6px #22c55e, 0 10px 30px rgba(0, 0, 0, 0.25); }
+}
+
+/* Controles sempre visíveis */
+.ard-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 14px;
+  width: min(92vw, 440px);
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px 14px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  font-size: 0.85rem;
+  color: #475569;
+}
+.ard-controls li { display: flex; align-items: center; gap: 8px; }
+.pad-key {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: #fff;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+.pad-dpad { background: #475569; border-radius: 8px; font-size: 1rem; }
+.pad-a { background: #22c55e; }
+.pad-x { background: #3b82f6; }
+.pad-y { background: #eab308; }
 
 .ard-hud {
   display: flex;
@@ -314,6 +353,7 @@
 .ard-level.lvl-easy .lbl { color: #059669; }
 .ard-level.lvl-medium .lbl { color: #d97706; }
 .ard-level.lvl-hard .lbl { color: #dc2626; }
+.ard-level.lvl-challenge .lbl { color: #d97706; }
 .ard-level.active { border-color: #22c55e; background: #f0fdf4; }
 
 .ard-steps, .ard-log {
