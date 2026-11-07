@@ -40,6 +40,13 @@ browser-sync) recarregam sozinhos, inclusive no Windows.
 - Botão **Resolver**: chama o **solver A\*** no backend, mostra o nº mínimo de
   movimentos + passo a passo e reproduz a solução no tabuleiro. Usar o Resolver
   invalida o recorde daquela tentativa.
+- **Modo Arduino**: joga no tabuleiro físico do
+  [hardware-rush-hour](https://github.com/kamilunelli/hardware-rush-hour)
+  (Arduino Uno + matriz LED RGB 8x8). O site conecta pela USB (**Web Serial**,
+  só Chrome/Edge no computador), lê o controle Xbox (**Gamepad API**) ou o teclado,
+  espelha o tabuleiro físico, escolhe/reinicia/cancela níveis e executa no Arduino
+  a solução do A\* (**Resolver**) ou só o próximo movimento (**Dica**), a partir da
+  posição atual. Código em `frontend/src/js/arduino.js`.
 
 ## Solver A\* (backend)
 
